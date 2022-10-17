@@ -19,7 +19,7 @@ export const createUser = async (req, res, next) => {
   const { first_name, last_name, email, password, companyId } = req.body;
   console.log('🚀 ~ file: user.controller.js ~ line 21 ~ companyId', companyId);
 
-  if (password.trim().length < 8) {
+  if (NODE_ENV !== 'initial' && (password.trim().length < 8 || password.trim().length > 48)) {
     return res.status(400).json({ message: 'Password must be at least 8 characters' });
   }
 

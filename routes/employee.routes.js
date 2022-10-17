@@ -8,3 +8,8 @@ router.route('/').get(getAllEmployees).post(createEmployee);
 router.route('/:id').get(getEmployee).put(updateEmployee).delete(deleteEmployee);
 
 export default router;
+
+
+// TO do: set isAuth. get('/) = admin, the rest clientAdmin.
+
+

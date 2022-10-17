@@ -8,7 +8,6 @@ import { isAuth } from '../middleware/isAuth.js';
 
 const router = express.Router();
 
-console.log('in index.routes');
 
 router.use('/auth', authRoutes);
 router.use('/company', isAuth('shAdmin'), companyRoutes);
