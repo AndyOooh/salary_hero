@@ -98,4 +98,6 @@ The project is ready to be deployed. If setting up a frontend, remember set ``NO
 
 👤 **AndyOooh**
 
-- Website: [andyo.xyz](andyo.xyz)
+- Website: [andyo.xyz](https://www.andyo.xyz/)
+- LinkedIn: [@andyooh](https://linkedin.com/in/andyooh)
+- Resume: [andyo.xyz/resume](https://www.andyo.xyz/static/media/Andreas%20Oee%20-%20Junior%20Full%20Stack%20-%20Resume.ab537effccc087b4a020.pdf)
