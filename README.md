@@ -64,7 +64,7 @@ This is a job application project. These are the requirements given:
 5. Create a company and a user for that company. This user will have clientAdmin privileges.
 6. Start CRUD'ing employees for that company with the user you just created at `api/employee`. Remember to set the Authorization header in the request with the accessToken you received when creating the user.
 7. Refer to routes files for additional endpoints and their usage.
-8. ``NODE_ENV=production`` is only relevant when/if adding a frontend.
+8. `NODE_ENV=production` is only relevant when/if adding a frontend.
 
 ## Features
 
@@ -85,7 +85,7 @@ This is a job application project. These are the requirements given:
 
 ## Further development
 
-The project is ready to be deployed. If setting up a frontend, remember set ``NODE_ENV=production`` and fill out ``FRONTEND_URL`` in the .env file. This is to avoid CORS issues.
+The project is ready to be deployed. If setting up a frontend, remember set `NODE_ENV=production` and fill out `FRONTEND_URL` in the .env file. This is to avoid CORS issues.
 
 ##### Potential features
 
@@ -98,6 +98,6 @@ The project is ready to be deployed. If setting up a frontend, remember set ``NO
 
 👤 **AndyOooh**
 
-- Website: <a href='https://www.andyo.xyz/'>andyo.xyz</a>
-- LinkedIn: <a href='https://linkedin.com/in/andyooh/'>@andyooh</a>
-- Resumé: <a href='https://www.andyo.xyz/static/media/Andreas%20Oee%20-%20Junior%20Full%20Stack%20-%20Resume.ab537effccc087b4a020.pdf'>andyo.xyz/resume</a>
+- Website: <a href='https://www.andyo.xyz/' target="_blank">>andyo.xyz</a>
+- LinkedIn: <a href='https://linkedin.com/in/andyooh/' target="_blank">>@andyooh</a>
+- Resumé: <a href='https://www.andyo.xyz/static/media/Andreas%20Oee%20-%20Junior%20Full%20Stack%20-%20Resume.ab537effccc087b4a020.pdf' target="_blank">>andyo.xyz/resume</a>
