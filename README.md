@@ -98,6 +98,7 @@ The project is ready to be deployed. If setting up a frontend, remember set `NOD
 
 👤 **AndyOooh**
 
-- Website: <a href='https://www.andyo.xyz/' target="_blank">andyo.xyz</a>
-- LinkedIn: <a href='https://www.linkedin.com/in/andreas-oee/' target="_blank" rel="noopener noreferrer">andreas-oee</a>
-- Resumé: <a href='https://www.andyo.xyz/static/media/Andreas%20Oee%20-%20Junior%20Full%20Stack%20-%20Resume.ab537effccc087b4a020.pdf' target="_blank">andyo.xyz/resume</a>
+- Website: [andyo.xyz](https://www.andyo.xyz/)
+- LinkedIn: [@andreas-oee](https://www.linkedin.com/in/andreas-oee/)
+- Resumé: [andyo.xyz/resume](https://www.andyo.xyz/static/media/Andreas%20Oee%20-%20Junior%20Full%20Stack%20-%20Resume.ab537effccc087b4a020.pdf)
+
