@@ -1,12 +1,15 @@
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 
 import { User } from '../models/user.model.js';
 import { generateToken } from '../services/token.service.js';
 import { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } from '../config/VARS.js';
+import { Company } from '../models/company.model.js';
 
 // ---------------------------------------- /refresh ----------------------------------------
 // @desc Refresh user access token
-// @route GET /api/auth/refresh
+// @route GET /api/refresh
+// Need refresh_token cookie
 export const refreshTokens = async (req, res) => {
   const { refresh_token } = req.cookies;
   if (!refresh_token) return res.sendStatus(401);
@@ -40,62 +43,67 @@ export const refreshTokens = async (req, res) => {
 
 // ---------------------------------------- /login ----------------------------------------
 // @desc Log user in
-// @route POST /api/auth/login
+// @route POST /api/login
 // @access Public
 export const login = async (req, res, next) => {
-  console.log('in login req.body:', req.body);
   const { email, password: loginPassword } = req.body;
   if (!email || !loginPassword) {
-    return res.status(400).json({ message: 'Please provide email and password.' });
+    return res.status(400).json({ message: 'Please provide email and password' });
   }
-  try {
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(400).json({ message: 'No user exists with the provided email.' });
-    }
-    console.log('🚀 ~ file: auth.controller.js ~ line 49 ~ user', user);
 
-    const passwordMatch = await bcrypt.compare(loginPassword, user.password);
+  try {
+    const user = await User.findOne({ where: { email } });
+    if (!user) {
+      return res.status(400).json({ message: 'User not found' });
+    }
+
+    const { password, refresh_token, ...userJson } = user.toJSON();
+
+    const passwordMatch = await bcrypt.compare(loginPassword, password);
     if (!passwordMatch) {
-      return res.status(400).json({ message: 'Invalid credentials.' });
+      return res.status(400).json({ message: 'Invalid credentials' });
     }
 
     const newRefreshToken = generateToken({ email }, REFRESH_TOKEN_SECRET, '7d');
-    user.refreshToken = newRefreshToken;
+    user.refresh_token = newRefreshToken;
     await user.save();
     res.cookie('refresh_token', newRefreshToken, {
       httpOnly: true,
     });
 
-    const newAccessToken = generateToken({ email, id }, ACCESS_TOKEN_SECRET, '700d');
+    const { id, access, companyId } = user;
+    const company = Company.findByPk(companyId);
+    const newAccessToken = generateToken({ id, access, company }, ACCESS_TOKEN_SECRET, '12h');
 
     res.status(200).json({
-      user: { id, ...rest },
-      accessToken: newAccessToken,
+      message: 'Login successful',
+      data: { ...userJson, accessToken: newAccessToken },
     });
   } catch (error) {
-    return next(error);
+    res.status(500).json({ message: 'Something went wrong', data: error });
   }
 };
 
 // ---------------------------------------- /logout ----------------------------------------
 // @desc Log a user out
-// @route POST /api/auth/logout
-// @access Public
+// @route POST /api/logout
+// Need refresh_token cookie
 export const logout = async (req, res) => {
-  // On client, also delete the accessToken
-
   const { refresh_token } = req.cookies;
   if (!refresh_token) return res.sendStatus(204); //No content
 
-  // Is refreshToken in db?
-  const existingUser = await User.findOne({ refresh_token }).exec();
-  if (existingUser) {
-    existingUser.refreshToken = null;
+  try {
+    const existingUser = await User.findOne({ where: { refresh_token } });
+    if (!existingUser) {
+      return res.status(400).json({ message: 'User not found' });
+    }
+    existingUser.refresh_token = null;
+    await existingUser.save();
+
+    console.log('sending response...');
+    res.clearCookie('refresh_token', { httpOnly: true });
+    res.status(200).json({ message: 'Logout successful' });
+  } catch (error) {
+    res.status(500).json({ message: 'Something went wrong', data: error });
   }
-
-  await existingUser?.save();
-
-  res.clearCookie('refresh_token', { httpOnly: true });
-  res.sendStatus(204);
 };

@@ -8,11 +8,10 @@ import { isAuth } from '../middleware/isAuth.js';
 
 const router = express.Router();
 
-
-router.use('/auth', authRoutes);
-router.use('/company', isAuth('shAdmin'), companyRoutes);
-// router.use('/user', isAuth('shAdmin'), userRoutes);
-router.use('/user', userRoutes);
-router.use('/employee', employeeRoutes);
+router.use('/', authRoutes);
+router.use('/companies', isAuth('shAdmin'), companyRoutes);
+router.use('/users', isAuth('shAdmin'), userRoutes);
+// router.use('/user', userRoutes);
+router.use('/employees', isAuth('admin'), employeeRoutes);
 
 export default router;

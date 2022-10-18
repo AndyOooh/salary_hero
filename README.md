@@ -64,15 +64,20 @@ This is a job application project. These are the requirements given:
 5. Create a company and a user for that company. This user will have clientAdmin privileges.
 6. Start CRUD'ing employees for that company with the user you just created at `api/employee`. Remember to set the Authorization header in the request with the accessToken you received when creating the user.
 7. Refer to routes files for additional endpoints and their usage.
-8. `NODE_ENV=production` is only relevant when/if adding a frontend.
+
+NB: `NODE_ENV=production` is only relevant when/if adding a frontend.
 
 ## Features
 
 - [x] Account creation.
-- [x] Login & authentication with Refresh/Access tokens.
-- [x] Protected routes with User roles: clientAdmin and shAdmin.
+- [x] Authentication & Authorization with Refresh/Access tokens.
+- [x] Protected routes with user roles: clientAdmin and shAdmin.
 - [x] CRUD operations for companies, users, employees.
-- [x] Filter/query employees by any sequelize filters.
+- [x] Filter/query employees by any SQL/sequelize filters.
+- [ ] Password reset.
+- [ ] Email verification of user accounts.
+- [ ] Improved error handling.
+- [ ] Add a frontend.
 
 ## Technologies
 
@@ -83,16 +88,18 @@ This is a job application project. These are the requirements given:
 
 ## Challenges
 
+- Implementing a role system.
+- Implementing a system for creating the genesis company and user.
+- What to do on startup. Should pobably migrate instead of sync.
+- Postgres has been challenging as most of my database experience is on No-SQL.
+  - Setting up the database.
+  - Setting up the relations.
+  - Joining data from different tables.
+  - Creating new tables instead of nesting properties.
+
 ## Further development
 
-The project is ready to be deployed. If setting up a frontend, remember set `NODE_ENV=production` and fill out `FRONTEND_URL` in the .env file. This is to avoid CORS issues.
-
-##### Potential features
-
-- [ ] Add a frontend.
-- [ ] Email verification of user accounts.
-- [ ] Password reset with code sent to email.
-- [ ] Improved error handling.
+The project is ready to be deployed. If setting up a frontend, remember to set `NODE_ENV=production` and fill out `FRONTEND_URL` in the .env file. This is to avoid CORS issues. See Features for ideas on what to implement next. Most important would be the password reset, as new users are not created by themselves, so therefore can not set a personal password initially.
 
 ## Author
 

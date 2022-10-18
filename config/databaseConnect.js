@@ -1,4 +1,4 @@
-import Sequelize from 'sequelize';
+import { Sequelize } from 'sequelize';
 
 import { DB_NAME, DB_USER, DB_PASSWORD } from './VARS.js';
 

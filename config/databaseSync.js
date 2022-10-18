@@ -11,12 +11,12 @@ User.belongsTo(Company, { constraints: true, onDelete: 'CASCADE' });
 Company.hasMany(User);
 
 // {force: true} is for development only. It will drop all tables and recreate them.
-export const databaseSync = async (req, res, next) => {
+export const databaseSync = async () => {
   try {
     if (NODE_ENV === 'initial') {
       await sequelize.sync({ force: true });
       const company = await Company.create({
-        name: 'Salary Hero',
+        name: 'Salary Hero2',
         registration_number: SH_REG_NUMBER,
         size: 'medium',
       });
@@ -26,6 +26,6 @@ export const databaseSync = async (req, res, next) => {
     }
   } catch (error) {
     console.log('error in databaseSync: ', error);
-    res.status(500).json({ message: 'Error in databaseSync', data: error });
+    // res.status(500).json({ message: 'Error in databaseSync', data: error });
   }
 };

@@ -1,4 +1,4 @@
-import  { DataTypes } from 'sequelize';
+import { DataTypes } from 'sequelize';
 
 import sequelize from '../config/databaseConnect.js';
 
@@ -17,6 +17,12 @@ export const User = sequelize.define(
     last_name: {
       type: DataTypes.STRING,
     },
+    // full_name: {
+    //   type: DataTypes.VIRTUAL,
+    //   get() {
+    //     return `${this.first_name} ${this.last_name}`;
+    //   },
+    // },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -27,10 +33,10 @@ export const User = sequelize.define(
       type: DataTypes.STRING,
       allowNull: { args: false, msg: 'You must set a password.' },
     },
-    refresh_token: DataTypes.STRING,
+    refresh_token: { type: DataTypes.STRING },
     // access is redundant as we could use companyId instead but it's kept for ease of reading/understanding.
     access: {
-      type: DataTypes.ENUM(['clientAdmin', 'shAdmin']), 
+      type: DataTypes.ENUM(['clientAdmin', 'shAdmin']),
       allowNull: false,
     },
   },
@@ -48,6 +54,10 @@ export const User = sequelize.define(
       afterSave: record => {
         delete record.dataValues.password;
         delete record.dataValues.refresh_token;
+      },
+      afterFind: record => {
+        // delete record.dataValues.password;
+        // delete record.dataValues.refresh_token;
       },
     },
   }
