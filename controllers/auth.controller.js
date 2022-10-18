@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
 import { User } from '../models/user.model.js';
-import { generateToken } from '../services/token.service.js';
+import { generateToken } from '../util/generateToken.js';
 import { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } from '../config/VARS.js';
 import { Company } from '../models/company.model.js';
 
@@ -56,14 +56,11 @@ export const login = async (req, res, next) => {
     if (!user) {
       return res.status(400).json({ message: 'User not found' });
     }
-
     const { password, refresh_token, ...userJson } = user.toJSON();
-
     const passwordMatch = await bcrypt.compare(loginPassword, password);
     if (!passwordMatch) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
-
     const newRefreshToken = generateToken({ email }, REFRESH_TOKEN_SECRET, '7d');
     user.refresh_token = newRefreshToken;
     await user.save();
@@ -72,8 +69,15 @@ export const login = async (req, res, next) => {
     });
 
     const { id, access, companyId } = user;
-    const company = Company.findByPk(companyId);
-    const newAccessToken = generateToken({ id, access, company }, ACCESS_TOKEN_SECRET, '12h');
+    const company = await Company.findByPk(companyId);
+    if (!company) {
+      return res.status(400).json({ message: 'Only company admins can access this route' });
+    }
+    const newAccessToken = generateToken(
+      { id, access, company },
+      ACCESS_TOKEN_SECRET,
+      '12h'
+    );
 
     res.status(200).json({
       message: 'Login successful',

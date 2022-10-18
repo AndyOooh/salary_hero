@@ -45,7 +45,7 @@ This is a job application project. These are the requirements given:
 2. Rename .env.sample to .env and fill out DB_NAME, DB_USER and DB_PASSWORD.
 3. Create the genesis company and user:
    1. `npm start` with `NODE_ENV=initial`. This creates the company Salary Hero with id: 1.
-   2. Send a POST request to `api/user` with a user object in the body. For example:
+   2. Send a POST request to `api/users` with a user object in the body. For example:
       ```json
       {
         "first_name": "John",
@@ -59,13 +59,33 @@ This is a job application project. These are the requirements given:
       - email can be any email conforming to Sequelize's isEmail validator.
       - password can be any with `NODE_ENV=initial`. Otherwise it must be between 8-48 characters, both included.
       - companyId must match the id of the company you want to add the user to. In this case, 1.
-   3. The request returns a user object, including an accessToken. The token can be used in subsequent requests to the API by setting `Authrization: Bearer <accessToken>` in the request header.
-4. `npm start` with `NODE_ENV=development`. This starts the server. You can now send requests to `api/company` and `api/user`.
-5. Create a company and a user for that company. This user will have clientAdmin privileges.
-6. Start CRUD'ing employees for that company with the user you just created at `api/employee`. Remember to set the Authorization header in the request with the accessToken you received when creating the user.
-7. Refer to routes files for additional endpoints and their usage.
+   3. The request returns a user object. You have now created the genesis user with **shAdmin** access. You should now log in to obtain an accessToken.
+4. `npm start` with `NODE_ENV=development`.
+5. Send a POST request to `api/login` with a credntials in the body, for example:
+   ```json
+   {
+     "email": "john@doe.com",
+     "password": "123"
+   }
+   ```
+6. Logging in returns a user object including an accessToken. You can use this token to send requests to `api/companies` and `api/users` by setting the request header `Authorization: Bearer <accessToken>`.
+7. Create a company and a user for that company. This user will have **clientAdmin** privileges.
+8. Start CRUD'ing employees for that company with the user you just created at `api/employees`. Remember to set the Authorization header in the request with the accessToken you received when creating the user.
+9. Refer to routes files for additional endpoints and their usage.
 
 NB: `NODE_ENV=production` is only relevant when/if adding a frontend.
+
+## Routes
+
+A user is either a Salary Hero admin (**shAdmin**) or a client admin (**clientAdmin**). Some routes are accessible by both. They are marked with access: **admin**.
+
+- `/api/companies` - CRUD companies, access: shAdmin.
+- `/api/users` - CRUD users, access: shAdmin.
+- `/api/employees` - CRUD employees, access: admin. clientAdmins can only CRUD employees for their company.
+- `/api/advance_requests` - CRUD companies, access: admin. clientAdmins can only CRUD advance_requests for empoyees of their company.
+- `/api/login` - login, no access needed.
+- `/api/logout` - logout, no access needed.
+
 
 ## Features
 
@@ -73,10 +93,12 @@ NB: `NODE_ENV=production` is only relevant when/if adding a frontend.
 - [x] Authentication & Authorization with Refresh/Access tokens.
 - [x] Protected routes with user roles: clientAdmin and shAdmin.
 - [x] CRUD operations for companies, users, employees.
+- [x] Create advance_request.
 - [x] Filter/query employees by any SQL/sequelize filters.
 - [ ] Password reset.
 - [ ] Email verification of user accounts.
-- [ ] Improved error handling.
+- [ ] Develop read, update, delete route and controller for advance_request.
+- [ ] Improve error handling.
 - [ ] Add a frontend.
 
 ## Technologies
@@ -108,4 +130,3 @@ The project is ready to be deployed. If setting up a frontend, remember to set `
 - Website: [andyo.xyz](https://www.andyo.xyz/)
 - LinkedIn: [@andreas-oee](https://www.linkedin.com/in/andreas-oee/)
 - Resumé: [andyo.xyz/resume](https://www.andyo.xyz/static/media/Andreas%20Oee%20-%20Junior%20Full%20Stack%20-%20Resume.ab537effccc087b4a020.pdf)
-

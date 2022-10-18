@@ -17,17 +17,19 @@ export const User = sequelize.define(
     last_name: {
       type: DataTypes.STRING,
     },
-    // full_name: {
-    //   type: DataTypes.VIRTUAL,
-    //   get() {
-    //     return `${this.first_name} ${this.last_name}`;
-    //   },
-    // },
+    full_name: {
+      type: DataTypes.VIRTUAL,
+      get() {
+        return `${this.first_name} ${this.last_name}`;
+      },
+    },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
-      validate: { isEmail: { args: true, msg: 'You must use a valid email address.' } },
+      validate: {
+        isEmail: { args: true, msg: 'You must use a valid email address.' },
+      },
     },
     password: {
       type: DataTypes.STRING,
@@ -43,6 +45,9 @@ export const User = sequelize.define(
   {
     // Making sure password, refresh_token is not returned on create, update or save:
     hooks: {
+      beforeCreate: user => {
+        user.email = user.email.toLowerCase();
+      },
       afterCreate: record => {
         delete record.dataValues.password;
         delete record.dataValues.refresh_token;

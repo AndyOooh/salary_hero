@@ -1,19 +1,13 @@
 import jwt from 'jsonwebtoken';
-import { ACCESS_TOKEN_SECRET, NODE_ENV, REFRESH_TOKEN_SECRET } from '../config/VARS.js';
-import { errorCreator } from '../services/error.service.js';
+import { ACCESS_TOKEN_SECRET, NODE_ENV } from '../config/VARS.js';
 
 export const isAuth = adminType => {
   return async (req, res, next) => {
     if (NODE_ENV === 'initial') return next();
     const authHeader = req.headers.authorization;
-    console.log('🚀 ~ file: isAuth.js ~ line 8 ~ authHeader', authHeader);
-    console.log('🚀 ~ file: isAuth.js ~ line 6 ~ adminType', adminType);
 
     if (!authHeader) {
-      // errorCreator('Not Authorized', 401);
-      const error = new Error('Not Authorized');
-      error.status = 401;
-      return next(error);
+      res.status(401).json({ message: 'Not Authorized' });
     }
     try {
       const accessToken = authHeader.split(' ')[1];
@@ -24,11 +18,10 @@ export const isAuth = adminType => {
         return res.status(401).json({ message: 'Not Authorized' });
       }
       req.user = decodedToken;
-      console.log('🚀 isAuth.js, decodedToken.id: ', decodedToken.id);
       next();
     } catch (error) {
       console.log('in isAuth error: ', error);
-      return next(error);
+      res.status(401).json({ message: 'Not Authorized', data: error });
     }
   };
 };

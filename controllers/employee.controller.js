@@ -1,11 +1,11 @@
-import {  SH_COMPANY_ID } from '../config/VARS.js';
+import { SH_COMPANY_ID } from '../config/VARS.js';
 import { Company } from '../models/company.model.js';
 
 import { Employee } from '../models/employee.model.js';
 
 export const getEmployees = async (req, res, next) => {
   const { query } = req.body;
-  
+
   try {
     const employees = await Employee.findAll({ ...query });
     res.status(200).json({ message: 'All employees retrieved.', data: employees });
@@ -16,26 +16,12 @@ export const getEmployees = async (req, res, next) => {
   }
 };
 
+export const createEmployee = async (req, res) => {
+  const { first_name, last_name, email, salary, position, companyId: inputCompanyId } = req.body;
 
-export const createEmployee = async (req, res, next) => {
-  const {
-    first_name,
-    last_name,
-    email,
-    salary,
-    position,
-    advanceRequests,
-    companyId: inputCompanyId,
-  } = req.body;
-  console.log('🚀 ~ file: employee.controller.js ~ line 20 ~ salary', salary);
-
-  const userCompanyId = req.user.company.id;
-  console.log('🚀 ~ file: employee.controller.js ~ line 25 ~ userCompanyId', userCompanyId);
-
-  if (inputCompanyId && userCompanyId !== SH_COMPANY_ID) {
-    return res
-      .status(400)
-      .json({ message: 'You are not allowed to create employees for other companies' });
+  const userCompanyId = req.user.company.id.toString();
+  if (inputCompanyId && ![SH_COMPANY_ID, inputCompanyId].includes(userCompanyId)) {
+    return res.status(400).json({ message: 'You can not register employees for other companies' });
   }
 
   if (!inputCompanyId && userCompanyId === SH_COMPANY_ID) {
@@ -62,8 +48,8 @@ export const createEmployee = async (req, res, next) => {
       // advanceRequests,
     });
 
-    res.status(200).json({
-      message: 'Employee created.',
+    res.status(201).json({
+      message: `Employee ${employee.full_name} created with id: ${employee.id}`,
       data: { ...employee.toJSON() },
     });
   } catch (error) {
@@ -86,24 +72,6 @@ export const getEmployee = async (req, res, next) => {
       .status(400)
       .json({ message: 'An error occured. Employee not retrieved', data: error });
   }
-};
-
-export const createAdvanceRequest = async (req, res, next) => {
-  const { id: employeeId } = req.params;
-  const { amount, reason, month, year } = req.body;
-
-  try {
-    const employee = await Employee.findByPk(employeeId);
-    if (!employee) {
-      return res.status(404).json({ message: 'Employee not found' });
-    }
-    const advanceRequest = {
-      amount,
-      reason,
-      month,
-      year,
-    };
-  } catch (error) {}
 };
 
 // Might be out of scope for the assignment.

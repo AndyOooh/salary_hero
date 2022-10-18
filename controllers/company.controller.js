@@ -27,7 +27,7 @@ export const createCompany = async (req, res, next) => {
       registration_number,
       size,
     });
-    res.status(200).json({
+    res.status(201).json({
       message: `Company ${company.name} created with id: ${company.id}`,
       data: company.toJSON(),
     });

@@ -1,14 +1,8 @@
 import bcrypt from 'bcrypt';
 
-import {
-  ACCESS_TOKEN_SECRET,
-  NODE_ENV,
-  REFRESH_TOKEN_SECRET,
-  SH_COMPANY_ID,
-} from '../config/VARS.js';
+import { NODE_ENV, SH_COMPANY_ID } from '../config/VARS.js';
 import { Company } from '../models/company.model.js';
 import { User } from '../models/user.model.js';
-import { generateToken } from '../services/token.service.js';
 
 // ---------------------------------------- getUsers ----------------------------------------
 // @desc get an array of users matching a speficied query.
@@ -37,30 +31,22 @@ export const createUser = async (req, res) => {
       return res.status(400).json({ message: 'Company not found' });
     }
     const encryptedPassword = await bcrypt.hash(password, 8);
-    // const newRefreshToken = generateToken({ email }, REFRESH_TOKEN_SECRET, '7d');
     const user = await company.createUser({
       first_name,
       last_name,
       email,
       password: encryptedPassword,
       access: companyId !== SH_COMPANY_ID ? 'clientAdmin' : 'shAdmin',
-      // refresh_token: newRefreshToken,
     });
 
-    // const newAccessToken = generateToken(
-    //   { id: user.id, access: user.access, company },
-    //   ACCESS_TOKEN_SECRET,
-    //   '12h'
-    // );
-
-    res
-      .status(200)
-      .json({ message: 'User created.', data: { ...user.toJSON(), accessToken: newAccessToken } });
+    res.status(201).json({
+      message: `User ${user.full_name} created with id: ${user.id}`,
+      data: { ...user.toJSON() },
+    });
   } catch (error) {
     res.status(400).json({ message: 'An error occured. User not created', data: error });
   }
 };
-
 
 // ---------------------------------------- getUser ----------------------------------------
 // @desc get a user.

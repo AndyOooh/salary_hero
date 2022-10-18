@@ -24,29 +24,29 @@ export const Company = sequelize.define(
   },
   {
     // Making sure password, refresh_token is not returned on create, update or save:
-    hooks: {
-      // afterCreate: record => {
-      //   delete record.dataValues.password;
-      //   delete record.dataValues.refresh_token;
-      // },
-      // afterUpdate: record => {
-      //   delete record.dataValues.password;
-      //   delete record.dataValues.refresh_token;
-      // },
-      // afterSave: record => {
-      //   delete record.dataValues.password;
-      //   delete record.dataValues.refresh_token;
-      // },
+    // hooks: {
+    //   // afterCreate: record => {
+    //   //   delete record.dataValues.password;
+    //   //   delete record.dataValues.refresh_token;
+    //   // },
+    //   // afterUpdate: record => {
+    //   //   delete record.dataValues.password;
+    //   //   delete record.dataValues.refresh_token;
+    //   // },
+    //   // afterSave: record => {
+    //   //   delete record.dataValues.password;
+    //   //   delete record.dataValues.refresh_token;
+    //   // },
 
-      // Not working as intended. Trying to delete password and refresh_token from the nested user.
-      afterFind: record => {
-        delete record.dataValues.user?.password;
-        delete record.dataValues.user?.refresh_token;
-      },
-      afterQuery: record => {
-        delete record.dataValues.user?.password;
-        delete record.dataValues.user?.refresh_token;
-      },
-    },
+    //   // Not working as intended. Trying to delete password and refresh_token from the nested user.
+    //   afterFind: record => {
+    //     delete record.dataValues.user?.password;
+    //     delete record.dataValues.user?.refresh_token;
+    //   },
+    //   afterQuery: record => {
+    //     delete record.dataValues.user?.password;
+    //     delete record.dataValues.user?.refresh_token;
+    //   },
+    // },
   }
 );

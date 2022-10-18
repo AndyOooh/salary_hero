@@ -3,12 +3,17 @@ import { Company } from '../models/company.model.js';
 import { Employee } from '../models/employee.model.js';
 import sequelize from './databaseConnect.js';
 import { NODE_ENV, SH_REG_NUMBER } from './VARS.js';
+import { AdvanceRequest } from '../models/advanceRequest.model.js';
+import { HasOne } from 'sequelize';
 
 // setting up model/table relations for benefits such as auto foreign_ids
 Employee.belongsTo(Company, { constraints: true, onDelete: 'CASCADE' });
 Company.hasMany(Employee);
 User.belongsTo(Company, { constraints: true, onDelete: 'CASCADE' });
-Company.hasMany(User);
+Company.hasOne(User);
+
+AdvanceRequest.belongsTo(Employee, { constraints: true, onDelete: 'CASCADE' });
+Employee.hasMany(AdvanceRequest);
 
 // {force: true} is for development only. It will drop all tables and recreate them.
 export const databaseSync = async () => {
