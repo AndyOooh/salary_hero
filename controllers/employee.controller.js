@@ -95,7 +95,7 @@ export const updateEmployee = async (req, res) => {
     employee.position = position || employee.position;
 
     await employee.save();
-    res.status(200).json({
+    res.status(201).json({
       message: `Employee ${employee.full_name} with id: ${employee.id} updated.`,
       data: { ...employee.toJSON() },
     });

@@ -66,11 +66,29 @@ export const getUser = async (req, res) => {
 };
 
 // ---------------------------------------- updateUser ----------------------------------------
-// @desc update a user.
+// @desc update a user matching an userId.
 // @route PUT /api/users/:id
 export const updateUser = async (req, res) => {
   const { id: userId } = req.params;
-  res.status(200).json({ message: 'User updated.' });
+  const { first_name, last_name, email } = req.body;
+
+  try {
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' });
+    }
+    user.first_name = first_name || user.first_name;
+    user.last_name = last_name || user.last_name;
+    user.email = email || user.email;
+
+    await user.save();
+    res.status(201).json({
+      message: `User ${user.full_name} with id: ${user.id} updated.`,
+      data: { ...user.toJSON() },
+    });
+  } catch (error) {
+    res.status(400).json({ message: 'An error occured. User not updated', data: error });
+  }
 };
 
 // ---------------------------------------- deleteUser ----------------------------------------

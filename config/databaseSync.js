@@ -27,7 +27,7 @@ export const databaseSync = async () => {
       });
       console.log('🚀 file: databaseSync.js, company3', company);
     } else {
-      await sequelize.sync({ alter: true });
+      await sequelize.sync();
     }
   } catch (error) {
     console.log('error in databaseSync: ', error);
