@@ -30,7 +30,7 @@ export const Employee = sequelize.define(
       unique: true,
       validate: { isEmail: { args: true, msg: 'You must use a valid email address.' } },
     },
-    salaray: {
+    salary: {
       type: DataTypes.INTEGER,
     },
     position: {

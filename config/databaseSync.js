@@ -21,13 +21,13 @@ export const databaseSync = async () => {
     if (NODE_ENV === 'initial') {
       await sequelize.sync({ force: true });
       const company = await Company.create({
-        name: 'Salary Hero2',
+        name: 'Salary Hero',
         registration_number: SH_REG_NUMBER,
         size: 'medium',
       });
-      console.log('🚀 file: databaseSync.js, company', company);
+      console.log('🚀 file: databaseSync.js, company3', company);
     } else {
-      await sequelize.sync();
+      await sequelize.sync({ alter: true });
     }
   } catch (error) {
     console.log('error in databaseSync: ', error);

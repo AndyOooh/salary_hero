@@ -37,12 +37,12 @@ This is a job application project. These are the requirements given:
 
 ##### Prerequisites
 
-- Node.js v 15.xx.
+- Node.js v xx.xx.
 - Postgres database.
 - A frontend emulator such as Postman or [Thunder Client](https://marketplace.visualstudio.com/items?itemName=rangav.vscode-thunder-client) for VSCode.
 
 1. Clone this repo and run `npm install`
-2. Rename .env.sample to .env and fill out DB_NAME, DB_USER and DB_PASSWORD.
+2. Rename .env.sample to .env and fill out ``DB_NAME_DEV``, ``DB_USER`` and ``DB_PASSWORD``.
 3. Create the genesis company and user:
    1. `npm start` with `NODE_ENV=initial`. This creates the company Salary Hero with id: 1.
    2. Send a POST request to `api/users` with a user object in the body. For example:
@@ -81,7 +81,7 @@ A user is either a Salary Hero admin (**shAdmin**) or a client admin (**clientAd
 
 - `/api/companies` - CRUD companies, access: shAdmin.
 - `/api/users` - CRUD users, access: shAdmin.
-- `/api/employees` - CRUD employees, access: admin. clientAdmins can only CRUD employees for their company.
+- `/api/employees` - CRUD employees, access: admin. clientAdmins can only CRUD employees for their own company.
 - `/api/advance_requests` - CRUD companies, access: admin. clientAdmins can only CRUD advance_requests for empoyees of their company.
 - `/api/login` - login, no access needed.
 - `/api/logout` - logout, no access needed.
@@ -98,7 +98,7 @@ A user is either a Salary Hero admin (**shAdmin**) or a client admin (**clientAd
 - [ ] Password reset.
 - [ ] Email verification of user accounts.
 - [ ] Develop read, update, delete route and controller for advance_request.
-- [ ] Improve error handling.
+- [ ] Error handling.
 - [ ] Add a frontend.
 
 ## Technologies
@@ -121,7 +121,7 @@ A user is either a Salary Hero admin (**shAdmin**) or a client admin (**clientAd
 
 ## Further development
 
-The project is ready to be deployed. If setting up a frontend, remember to set `NODE_ENV=production` and fill out `FRONTEND_URL` in the .env file. This is to avoid CORS issues. See Features for ideas on what to implement next. Most important would be the password reset, as new users are not created by themselves, so therefore can not set a personal password initially.
+The project is ready to be deployed. If setting up a frontend, remember to set `NODE_ENV=production` and fill out `FRONTEND_URL` in the .env file. This is to avoid CORS issues. See Features for ideas on what to implement next. Most important would be the password reset, as new users are not created by themselves, so therefore can not set a personal password initially. The database design and setup also has room for improvement. I would like to migrate instead of sync on startup, add more and better validation. I would also like to add indexing to be proactive with regards to scaling.
 
 ## Author
 

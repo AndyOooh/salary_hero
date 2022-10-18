@@ -48,16 +48,16 @@ export const getCompany = async (req, res, next) => {
     include: [{ model: User, attributes: { exclude: ['password', 'refresh_token'] } }],
   });
   if (!company) {
-    return res.status(404).json({ message: 'Company not found.' });
+    return res.status(404).json({ message: 'Company not found' });
   }
   res.status(200).json({
-    message: `Company ${company.name} with id: ${company.id} retrieved.`,
+    message: `Company ${company.name} with id: ${company.id} retrieved`,
     data: company.toJSON(),
   });
 };
 
 // ---------------------------------------- updateCompany ----------------------------------------
-// @desc update a specific company matching a companyId.
+// @desc update a company matching a companyId.
 // @route PUT /api/companies/:id
 export const updateCompany = async (req, res) => {
   const { id: companyId } = req.params;
@@ -65,15 +65,18 @@ export const updateCompany = async (req, res) => {
   try {
     const company = await Company.findByPk(companyId);
     if (!company) {
-      return res.status(404).json({ message: 'Company not found.' });
+      return res.status(404).json({ message: 'Company not found' });
     }
     company.name = name || company.name;
     company.registration_number = registration_number || company.registration_number;
     company.size = size || company.size;
     await company.save();
-    res.status(200).json({ message: 'Company updated.', data: { ...company.toJSON() } });
+    res.status(200).json({
+      message: `Company ${company.name} with id: ${company.id} updated`,
+      data: { ...company.toJSON() },
+    });
   } catch (error) {
-    return res(400).json({ message: 'An error occured. Company not updated', data: error });
+    res.status(400).json({ message: 'An error occured. Company not updated', data: error });
   }
 };
 
